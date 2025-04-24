@@ -7,10 +7,13 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 	worldTransform_.Initialize();
 	camera_.Initialize();
+	player_ = new Player();
+	player_->Initialize(model_, textureHandle_,&camera_);
 }
 
-void GameScene::Update() {
-
+void GameScene::Update() 
+{
+	player_->Update(); 
 }
 
 void GameScene::Draw() 
@@ -21,9 +24,12 @@ void GameScene::Draw()
 
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 
+	player_->Draw();
+	
 	Model::PostDraw();
 }
 GameScene::~GameScene() 
 { 
 	delete model_;
+	delete player_;
 }
