@@ -3,7 +3,7 @@
 class Player 
 {
 public:
-	void Initialize(KamataEngine::Model* mod, uint32_t texturehandle,KamataEngine::Camera * camera);
+	void Initialize(KamataEngine::Model* mod, KamataEngine::Camera * camera);
 
 	void Update(); 
 

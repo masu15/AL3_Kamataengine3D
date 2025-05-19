@@ -8,9 +8,12 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	camera_.Initialize();
 	player_ = new Player();
-	modelBlock_ = Model::CreateFromOBJ("cube");
-	player_->Initialize(model_, textureHandle_,&camera_);
-	
+	modelBlock_ = Model::CreateFromOBJ("block");
+	model_ = KamataEngine::Model::CreateFromOBJ("player");
+	player_->Initialize(model_,&camera_);
+	skydome_ = new skydome;
+	modelskydome_ = KamataEngine::Model::CreateFromOBJ("SkyDome", true);
+	skydome_->Initialize(modelskydome_, textureHandle_, &camera_);
 	const uint32_t KNumBlockVirtical = 10;
 	const uint32_t kNumBlockHorizontal = 20;
 	const float kBlockWidth = 2.0f;
@@ -37,6 +40,7 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 	player_->Update();
 	debugCamera_->Update();
+	skydome_->Update();
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = !isDebugCameraActive_;
@@ -71,8 +75,9 @@ void GameScene::Draw()
 
 	//model_->Draw(worldTransform_, camera_, textureHandle_);
 
-	//player_->Draw();
+	player_->Draw();
 	
+	skydome_->Draw();
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : WorldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
@@ -88,6 +93,7 @@ GameScene::~GameScene()
 { 
 	delete model_;
 	delete player_;
+	delete modelskydome_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : WorldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;
