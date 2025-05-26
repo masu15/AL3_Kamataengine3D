@@ -19,7 +19,7 @@ void GameScene::Initialize() {
 	GenerateBlocks();
 	//const float kBlockWidth = 2.0f;
 	//const float KBlockHeight = 2.0f;
-	//debugCamera_ = new DebugCamera(1280, 720);
+	debugCamera_ = new DebugCamera(1280, 720);
 	//WorldTransformBlocks_.resize(KNumBlockVirtical);
 	//for (uint32_t i = 0; i < KNumBlockVirtical; i++) {
 	//	WorldTransformBlocks_[i].resize(kNumBlockHorizontal);
@@ -106,6 +106,7 @@ void GameScene::GenerateBlocks()
 				worldTransform->Initialize();
 				WorldTransformBlocks_[i][j] = worldTransform;
 				WorldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			   
 			}
 
 		}
