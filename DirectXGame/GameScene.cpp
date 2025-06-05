@@ -10,13 +10,15 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	modelBlock_ = Model::CreateFromOBJ("block");
 	model_ = KamataEngine::Model::CreateFromOBJ("player");
-	player_->Initialize(model_,&camera_);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	player_->Initialize(model_, &camera_,playerPosition);
 	skydome_ = new skydome;
 	modelskydome_ = KamataEngine::Model::CreateFromOBJ("SkyDome", true);
 	skydome_->Initialize(modelskydome_, textureHandle_, &camera_);
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	GenerateBlocks();
+	player_->Initialize(model_, &camera_, playerPosition);
 	//const float kBlockWidth = 2.0f;
 	//const float KBlockHeight = 2.0f;
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -61,7 +63,7 @@ void GameScene::Update() {
 				continue;
 			}
 				// アフィン変換の作成
-				worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+                worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);				
 				worldTransformBlock->TransferMatrix();
 			   
 		}
