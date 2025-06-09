@@ -19,6 +19,7 @@ public:
 	static inline const float kGravityAcceleration = 0.1f;
 	static inline const float kLimitFallSpeed = 1.0f;
 	static inline const float KJumpAcceleration = 1.0f;
+	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
 	private:
 
 	KamataEngine::WorldTransform worldTransform_;
