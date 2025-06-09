@@ -17,8 +17,9 @@ void GameScene::Initialize() {
 	skydome_->Initialize(modelskydome_, textureHandle_, &camera_);
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	cameraController_ = new CameraController;
 	GenerateBlocks();
-	player_->Initialize(model_, &camera_, playerPosition);
+	/*player_->Initialize(model_, &camera_, playerPosition);*/
 	//const float kBlockWidth = 2.0f;
 	//const float KBlockHeight = 2.0f;
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -76,7 +77,7 @@ void GameScene::Draw()
 
 	Model::PreDraw(dxCommon->GetCommandList());
 
-	//model_->Draw(worldTransform_, camera_, textureHandle_);
+	model_->Draw(worldTransform_, camera_, textureHandle_);
 
 	player_->Draw();
 	

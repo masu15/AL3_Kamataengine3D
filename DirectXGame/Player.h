@@ -16,9 +16,9 @@ public:
 	static inline const float KAttenuation = 0.1f;
 	static inline const float KLimitRunSpeed = 0.5f;
 	static inline const float KTimeTurn = 0.3f;
-	static inline const float kGravityAcceleration = 0.5f;
-	static inline const float kLimitFallSpeed = 0.5f;
-	static inline const float KJumpAcceleration = 0.5f;
+	static inline const float kGravityAcceleration = 0.1f;
+	static inline const float kLimitFallSpeed = 1.0f;
+	static inline const float KJumpAcceleration = 1.0f;
 	private:
 
 	KamataEngine::WorldTransform worldTransform_;
