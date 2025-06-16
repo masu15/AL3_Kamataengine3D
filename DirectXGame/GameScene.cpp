@@ -18,6 +18,11 @@ void GameScene::Initialize() {
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	cameraController_ = new CameraController;
+	cameraController_->Initialize();
+	cameraController_->SetTarget(player_);
+	cameraController_->Reset();
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController_->setMovableArea(cameraArea);
 	GenerateBlocks();
 	/*player_->Initialize(model_, &camera_, playerPosition);*/
 	//const float kBlockWidth = 2.0f;
@@ -45,6 +50,7 @@ void GameScene::Update() {
 	player_->Update();
 	debugCamera_->Update();
 	skydome_->Update();
+	cameraController_->Update();
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = !isDebugCameraActive_;
@@ -56,7 +62,9 @@ void GameScene::Update() {
 		camera_.matProjection = debugCamera_->GetCamera().matProjection;
 		camera_.TransferMatrix();
 	} else {
-		camera_.UpdateMatrix();
+		camera_.matView = cameraController_->GetViewProjection().matView;
+		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+		camera_.TransferMatrix();
 	}
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : WorldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -97,7 +105,7 @@ void GameScene::Draw()
 void GameScene::GenerateBlocks()
 {
 	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
-	uint32_t numBlockHorizontal = mapChipField_->GetkNumBlockHorizontal();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 	WorldTransformBlocks_.resize(numBlockVirtical);
 	for (uint32_t i = 0; i < numBlockVirtical; i++) {
 		WorldTransformBlocks_[i].resize(numBlockHorizontal);
