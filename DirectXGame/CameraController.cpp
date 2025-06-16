@@ -22,7 +22,6 @@ void CameraController::Update()
 	camera_.translation_.y = min(camera_.translation_.y, movableArea_.top);
 	camera_.UpdateMatrix();
 }
-
 void CameraController::Reset() { 
 	const WorldTransform& targetWorldTransform = target_->GetWorldTransform();
 	camera_.translation_ = targetWorldTransform.translation_ + targetOffset_;
