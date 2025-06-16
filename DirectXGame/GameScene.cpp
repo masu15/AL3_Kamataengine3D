@@ -18,6 +18,11 @@ void GameScene::Initialize() {
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	cameraController_ = new CameraController;
+	cameraController_->Initialize();
+	cameraController_->SetTarget(player_);
+	cameraController_->Reset();
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController_->setMovableArea(cameraArea);
 	GenerateBlocks();
 	/*player_->Initialize(model_, &camera_, playerPosition);*/
 	//const float kBlockWidth = 2.0f;
