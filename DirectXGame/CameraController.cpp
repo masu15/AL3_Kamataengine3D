@@ -1,4 +1,3 @@
-
 #define NOMINMAX
 #include "CameraController.h"
 #include "Player.h"
@@ -9,13 +8,18 @@ using namespace MathUtility;
 void CameraController::Initialize() { camera_.Initialize(); }
 void CameraController::Update() {
 	const WorldTransform& targetWorldTransform = target_->GetWorldTransform();
-	targetPosition_ = targetWorldTransform.translation_ + targetOffset_ + targetVelocity * kVelocityBias;
+	const KamataEngine::Vector3& targetVelocity = target_->GetVelocity();
+	targetPosition_ = targetWorldTransform.translation_ + targetOffset_+targetVelocity*kVelocityBias;
 	camera_.translation_.x = Lerp(camera_.translation_.x, targetPosition_.x, kInterpolationRate);
+	camera_.translation_.x = std::max(camera_.translation_.x, movableArea_.left);
+	camera_.translation_.x = std::min(camera_.translation_.x, movableArea_.right);
+	camera_.translation_.y = std::max(camera_.translation_.y, movableArea_.bottom);
+	camera_.translation_.y = std::min(camera_.translation_.y, movableArea_.top);  
 
-	camera_.translation_.x = max(camera_.translation_.x, movableArea_.left);
-	camera_.translation_.x = min(camera_.translation_.x, movableArea_.right);
-	camera_.translation_.y = max(camera_.translation_.y, movableArea_.bottom);
-	camera_.translation_.y = min(camera_.translation_.y, movableArea_.top);
+	camera_.translation_.x = std::max(camera_.translation_.x, camera_.translation_.x + margin.left);
+	camera_.translation_.x = std::min(camera_.translation_.x, camera_.translation_.x + margin.right);
+	camera_.translation_.y = std::max(camera_.translation_.y, camera_.translation_.y + margin.bottom);
+	camera_.translation_.y = std::min(camera_.translation_.y, camera_.translation_.y + margin.top);
 	camera_.UpdateMatrix();
 }
 void CameraController::Reset() {

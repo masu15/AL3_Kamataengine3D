@@ -50,6 +50,7 @@ void GameScene::Update() {
 	player_->Update();
 	debugCamera_->Update();
 	skydome_->Update();
+	cameraController_->Update();
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = !isDebugCameraActive_;
@@ -61,7 +62,9 @@ void GameScene::Update() {
 		camera_.matProjection = debugCamera_->GetCamera().matProjection;
 		camera_.TransferMatrix();
 	} else {
-		camera_.UpdateMatrix();
+		camera_.matView = cameraController_->GetViewProjection().matView;
+		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+		camera_.TransferMatrix();
 	}
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : WorldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
