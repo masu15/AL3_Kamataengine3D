@@ -28,7 +28,7 @@ public:
 	static inline const float KTimeTurn = 0.3f;
 	static inline const float kGravityAcceleration = 0.1f;
 	static inline const float kLimitFallSpeed = 1.0f;
-	static inline const float KJumpAcceleration = 0.7f;
+	static inline const float KJumpAcceleration = 1.0f;
 	static inline const float KWidth = 0.8f;
 	static inline const float KHeight = 0.8f;
 	static inline const float kBlank = 0.1f;

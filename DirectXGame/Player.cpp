@@ -57,7 +57,6 @@ void Player::Update()
 			onGround_ = true;
 		}
 	}
-	worldTransform_.translation_ += velocity_;
 	//旋回制御
 	AnimateTurn();
 	//行列計算
