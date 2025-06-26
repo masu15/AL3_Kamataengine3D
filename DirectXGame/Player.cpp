@@ -212,7 +212,6 @@ KamataEngine::Vector3 Player::CornerPosition(const KamataEngine::Vector3& center
 }
 void Player::CheckMapLanding(const CollisionMapInfo& info) {
 	if (onGround_) {
-
 		if (velocity_.y > 0.0f) {
 			onGround_ = false;
 		} else {
@@ -232,9 +231,9 @@ void Player::CheckMapLanding(const CollisionMapInfo& info) {
 			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 			if (mapChipType == MapChipType::kBlock) {
 				hit = true;
-				if (!hit) {
+			}
+			if (!hit) {
 					onGround_ = false;
-				}
 			}
 		}
 	} else {
