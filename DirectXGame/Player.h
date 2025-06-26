@@ -32,7 +32,7 @@ public:
 	static inline const float KWidth = 0.8f;
 	static inline const float KHeight = 0.8f;
 	static inline const float kBlank = 0.1f;
-
+	static inline const float kAttenuationLanding = 0.5f;
 	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
 	const KamataEngine::Vector3&GetVelocity() const { return velocity_; }
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_=mapChipField;}
@@ -48,10 +48,11 @@ public:
 	void CheckMapMove(const CollisionMapInfo&info);
 	void CheckMapCeiling(const CollisionMapInfo& info);
 	void checkMapWall();
-	void CheckMapLanding();
+	void CheckMapLanding(const CollisionMapInfo& info);
 	void AnimateTurn();
 	void Draw();
 	void CheckMapCollisionUp(CollisionMapInfo&info);
+	void CheckMapCollisionDown(CollisionMapInfo& info);
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
 	private:
 	MapChipField* mapChipField_ = nullptr;
