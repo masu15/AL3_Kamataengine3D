@@ -148,7 +148,10 @@ void Player::AnimateTurn() {
 	}
 }
 
-void Player::Draw() { model_->Draw(worldTransform_, *camera_); }
+void Player::Draw() 
+{
+	model_->Draw(worldTransform_, *camera_);
+}
 
 void Player::CheckMapCollisionUp(CollisionMapInfo& info) 
 {
