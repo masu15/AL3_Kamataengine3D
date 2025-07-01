@@ -1,7 +1,6 @@
 #define NOMINMAX
 #include "Player.h"
 #include"numbers"
-#include "MyMath.h"
 #include <algorithm>
 #include"MapChipField.h"
 using namespace KamataEngine;
@@ -296,6 +295,18 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info)
 			info.hitWall = true;
 		}
 	}
+}
+AABB Player::GetAABB() 
+{   
+	AABB aabb;
+
+
+	return aabb;
+}
+Vector3 Player::GetWorldPosition() 
+{
+	Vector3 worldPos;
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
 }
 KamataEngine::Vector3 Player::CornerPosition(const KamataEngine::Vector3& center, Corner corner)
 { 

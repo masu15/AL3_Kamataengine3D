@@ -1,5 +1,6 @@
 #pragma once
 #include "KamataEngine.h"
+#include "MyMath.h"
 class MapChipField;
 enum class LRDirection { 
 	kRight,
@@ -57,6 +58,8 @@ public:
 	void CheckMapCollisionDown(CollisionMapInfo& info);
 	void CheckMapCollisionRight(CollisionMapInfo& info);
 	void CheckMapCollisionLeft(CollisionMapInfo& info);
+	AABB GetAABB();
+	KamataEngine::Vector3 GetWorldPosition();
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
 	private:
 	MapChipField* mapChipField_ = nullptr;

@@ -26,10 +26,13 @@ void GameScene::Initialize() {
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController_->setMovableArea(cameraArea);
 	GenerateBlocks();
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15, 18);
-	enemy_ = new Enemy;
-	enemy_->Initialize(modelEnemy_, &camera_,enemyPosition);
-
+	
+	for (int32_t i = 0; i < 3; i++) {
+		Enemy* newEnemy = new Enemy;
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i+10, 18);
+		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
+		enemies_.push_back(newEnemy);
+	}
 	/*player_->Initialize(model_, &camera_, playerPosition);*/
 	//const float kBlockWidth = 2.0f;
 	//const float KBlockHeight = 2.0f;
@@ -57,7 +60,9 @@ void GameScene::Update() {
 	debugCamera_->Update();
 	skydome_->Update();
 	cameraController_->Update();
-	enemy_->Update();
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = !isDebugCameraActive_;
@@ -98,7 +103,9 @@ void GameScene::Draw()
 	
 	skydome_->Draw();
 
-	enemy_->Draw();
+	for (Enemy* enemy : enemies_) {
+		enemy->Draw();
+	}
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : WorldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
@@ -139,7 +146,9 @@ GameScene::~GameScene()
 	delete model_;
 	delete player_;
 	delete modelskydome_;
-	delete enemy_;
+	for (Enemy* enemy : enemies_) {
+		delete enemy;
+	}
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : WorldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;

@@ -24,6 +24,7 @@ public:
 	static inline const float kVelocityBias = 10.0f;
 	static inline const Rect margin = {-9.0f,9.0f,5.0f,-5.0f};
 	
+
 private:
 	KamataEngine::Camera camera_;
 	Player* target_ = nullptr;

@@ -21,7 +21,7 @@ public:
 
     Player* player_ = nullptr;
     skydome* skydome_ = nullptr;
-	Enemy* enemy_ = nullptr;
+	std::list<Enemy*> enemies_;
 	MapChipField* mapChipField_;
 	CameraController* cameraController_;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> WorldTransformBlocks_;
