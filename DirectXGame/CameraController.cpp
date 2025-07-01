@@ -16,10 +16,10 @@ void CameraController::Update()
 	targetPosition_ = targetWorldTransform.translation_ + targetOffset_+targetVelocity*kVelocityBias;
 	camera_.translation_.x = Lerp(camera_.translation_.x, targetPosition_.x, kInterpolationRate);
 	
-	camera_.translation_.x = max(camera_.translation_.x, movableArea_.left);
-	camera_.translation_.x = min(camera_.translation_.x, movableArea_.right);
-	camera_.translation_.y = max(camera_.translation_.y, movableArea_.bottom);
-	camera_.translation_.y = min(camera_.translation_.y, movableArea_.top);
+	camera_.translation_.x = std::max(camera_.translation_.x, movableArea_.left);
+	camera_.translation_.x = std::min(camera_.translation_.x, movableArea_.right);
+	camera_.translation_.y = std::max(camera_.translation_.y, movableArea_.bottom);
+	camera_.translation_.y = std::min(camera_.translation_.y, movableArea_.top);
 	camera_.UpdateMatrix();
 }
 void CameraController::Reset() { 
