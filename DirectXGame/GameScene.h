@@ -13,6 +13,8 @@ public:
 
 	void Update();
 
+	void CheckAllCollisions();
+
 	void Draw();
 
 	void GenerateBlocks();

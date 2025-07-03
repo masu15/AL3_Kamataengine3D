@@ -10,6 +10,10 @@ public:
 
 	void Draw();
 
+	AABB GetAABB();
+
+	KamataEngine::Vector3 GetWorldPosition();
+
 	static inline const float kWalkSpeed = 0.01f;
 	KamataEngine::Vector3 velocity_ = {};
 

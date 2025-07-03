@@ -3,6 +3,8 @@
 #include "MyMath.h"
 #include <algorithm>
 #include <cassert>
+
+
 using namespace KamataEngine;
 using namespace MathUtility;
 void Enemy::Initialize(Model* model, Camera* camera, Vector3& position) {
@@ -25,4 +27,20 @@ void Enemy::Update() {
 void Enemy::Draw()
 { 
 	model_->Draw(worldTransform_, *camera_);
+}
+
+AABB Enemy::GetAABB()
+{
+	Vector3 worldPos = GetWorldPosition();
+	AABB aabb;
+	aabb.min = {worldPos.x - KWidth / 2.0f, worldPos.y - KHeight / 2.0f, worldPos.z - KWidth / 2.0f};
+	aabb.max = {worldPos.x + KWidth / 2.0f, worldPos.y + KHeight / 2.0f, worldPos.z + KWidth / 2.0f};
+	return aabb;
+}
+Vector3 Enemy::GetWorldPosition() {
+	Vector3 worldPos;
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+	return worldPos;
 }

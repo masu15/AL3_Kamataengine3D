@@ -298,15 +298,19 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info)
 }
 AABB Player::GetAABB() 
 {   
+	Vector3 worldPos = GetWorldPosition();
 	AABB aabb;
-
-
+	aabb.min = {worldPos.x - KWidth / 2.0f, worldPos.y - KHeight / 2.0f, worldPos.z - KWidth / 2.0f};
+	aabb.max = {worldPos.x + KWidth / 2.0f, worldPos.y + KHeight / 2.0f, worldPos.z + KWidth / 2.0f};
 	return aabb;
 }
 Vector3 Player::GetWorldPosition() 
 {
 	Vector3 worldPos;
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+	return worldPos;
 }
 KamataEngine::Vector3 Player::CornerPosition(const KamataEngine::Vector3& center, Corner corner)
 { 

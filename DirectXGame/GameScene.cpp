@@ -91,6 +91,16 @@ void GameScene::Update() {
 	}
 }
 
+void GameScene::CheckAllCollisions() 
+{
+	#pragma region PlayerEnemyHit
+	AABB aabb1, aabb2;
+	aabb1 = player_->GetAABB();
+	for (Enemy* enemy : enemies_) {
+	   aabb2=enemy
+	}
+}
+
 void GameScene::Draw() 
 {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance(); 
