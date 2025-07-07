@@ -21,7 +21,7 @@ public:
     Player* player_ = nullptr;
     skydome* skydome_ = nullptr;
 	MapChipField* mapChipField_;
-	CameraController* cameraController_;
+	//CameraController* cameraController_;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> WorldTransformBlocks_;
 private:
 uint32_t textureHandle_ = 0;

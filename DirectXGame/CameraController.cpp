@@ -1,4 +1,4 @@
-#define NOMINMAX
+#/*define NOMINMAX
 #include "CameraController.h"
 #include"Player.h"
 #include"math.h"
@@ -25,4 +25,4 @@ void CameraController::Update()
 void CameraController::Reset() { 
 	const WorldTransform& targetWorldTransform = target_->GetWorldTransform();
 	camera_.translation_ = targetWorldTransform.translation_ + targetOffset_;
-}
+}*/
