@@ -29,7 +29,7 @@ void GameScene::Initialize() {
 	
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy;
-		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i+20, 18);
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i*10, 18);
 		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
 		enemies_.push_back(newEnemy);
 	}
