@@ -37,6 +37,9 @@ AABB Enemy::GetAABB()
 	aabb.max = {worldPos.x + KWidth / 2.0f, worldPos.y + KHeight / 2.0f, worldPos.z + KWidth / 2.0f};
 	return aabb;
 }
+void Enemy::OnCollision(const Player* player) { 
+	(void)player; 
+}
 Vector3 Enemy::GetWorldPosition() {
 	Vector3 worldPos;
 	worldPos.x = worldTransform_.matWorld_.m[3][0];

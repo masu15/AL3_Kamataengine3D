@@ -296,6 +296,11 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info)
 		}
 	}
 }
+void Player::OnCollision(const Enemy* enemy)
+{
+	(void)enemy;
+	velocity_ += Vector3(0, KJumpAcceleration, 0);
+}
 AABB Player::GetAABB() 
 {   
 	Vector3 worldPos = GetWorldPosition();

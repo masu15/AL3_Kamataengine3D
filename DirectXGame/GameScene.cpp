@@ -29,7 +29,7 @@ void GameScene::Initialize() {
 	
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy;
-		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i+10, 18);
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i+20, 18);
 		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
 		enemies_.push_back(newEnemy);
 	}
@@ -60,6 +60,7 @@ void GameScene::Update() {
 	debugCamera_->Update();
 	skydome_->Update();
 	cameraController_->Update();
+	CheckAllCollisions();
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}
@@ -96,9 +97,16 @@ void GameScene::CheckAllCollisions()
 	#pragma region PlayerEnemyHit
 	AABB aabb1, aabb2;
 	aabb1 = player_->GetAABB();
-	for (Enemy* enemy : enemies_) {
-	   aabb2=enemy
-	}
+	
+		for (Enemy* enemy : enemies_) {
+			aabb2 = enemy->GetAABB();
+			if (IsCollision(aabb1, aabb2)){
+				player_->OnCollision(enemy);
+				enemy->OnCollision(player_);
+			}
+		}
+	
+	#pragma endregion
 }
 
 void GameScene::Draw() 

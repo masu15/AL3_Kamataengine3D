@@ -2,6 +2,7 @@
 #include "KamataEngine.h"
 #include "MyMath.h"
 class MapChipField;
+class Enemy;
 enum class LRDirection { 
 	kRight,
 	KLeft
@@ -58,6 +59,7 @@ public:
 	void CheckMapCollisionDown(CollisionMapInfo& info);
 	void CheckMapCollisionRight(CollisionMapInfo& info);
 	void CheckMapCollisionLeft(CollisionMapInfo& info);
+	void OnCollision(const Enemy* enemy);
 	AABB GetAABB();
 	KamataEngine::Vector3 GetWorldPosition();
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
