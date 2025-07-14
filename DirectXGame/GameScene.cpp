@@ -1,8 +1,8 @@
 #include "GameScene.h"
-#include"MyMath.h"
+#include "MyMath.h"
 using namespace KamataEngine;
 
-void GameScene::Initialize() { 
+void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	model_ = Model::Create();
 	worldTransform_.Initialize();
@@ -26,22 +26,26 @@ void GameScene::Initialize() {
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController_->setMovableArea(cameraArea);
 	GenerateBlocks();
-	
+	deathParticles_ = new DeathParticles;
+	modelDeathParticles_ = KamataEngine::Model::CreateFromOBJ("deathParticle");
+	Vector3 DeathPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	deathParticles_->Initialize(modelDeathParticles_, &camera_, DeathPosition);
+
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy;
-		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i*10, 18);
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i * 10, 18);
 		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
 		enemies_.push_back(newEnemy);
 	}
 	/*player_->Initialize(model_, &camera_, playerPosition);*/
-	//const float kBlockWidth = 2.0f;
-	//const float KBlockHeight = 2.0f;
+	// const float kBlockWidth = 2.0f;
+	// const float KBlockHeight = 2.0f;
 	debugCamera_ = new DebugCamera(1280, 720);
-	//WorldTransformBlocks_.resize(KNumBlockVirtical);
-	//for (uint32_t i = 0; i < KNumBlockVirtical; i++) {
+	// WorldTransformBlocks_.resize(KNumBlockVirtical);
+	// for (uint32_t i = 0; i < KNumBlockVirtical; i++) {
 	//	WorldTransformBlocks_[i].resize(kNumBlockHorizontal);
-	//}
-	//for (uint32_t i = 0; i < KNumBlockVirtical; ++i) {
+	// }
+	// for (uint32_t i = 0; i < KNumBlockVirtical; ++i) {
 	//	for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
 	//		if ((i+j) %2 == 0)
 	//		{
@@ -52,7 +56,7 @@ void GameScene::Initialize() {
 	//		WorldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
 	//		WorldTransformBlocks_[i][j]->translation_.y = KBlockHeight * i;
 	//	}
-	//}
+	// }
 }
 
 void GameScene::Update() {
@@ -63,6 +67,9 @@ void GameScene::Update() {
 	CheckAllCollisions();
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
+	}
+	if (deathParticles_) {
+		deathParticles_->Update();
 	}
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
@@ -84,43 +91,43 @@ void GameScene::Update() {
 			if (!worldTransformBlock) {
 				continue;
 			}
-				// アフィン変換の作成
-                worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);				
-				worldTransformBlock->TransferMatrix();
-			   
+			// アフィン変換の作成
+			worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
+			worldTransformBlock->TransferMatrix();
 		}
 	}
 }
 
-void GameScene::CheckAllCollisions() 
-{
-	#pragma region PlayerEnemyHit
+void GameScene::CheckAllCollisions() {
+#pragma region PlayerEnemyHit
 	AABB aabb1, aabb2;
 	aabb1 = player_->GetAABB();
-	
-		for (Enemy* enemy : enemies_) {
-			aabb2 = enemy->GetAABB();
-			if (IsCollision(aabb1, aabb2)){
-				player_->OnCollision(enemy);
-				enemy->OnCollision(player_);
-			}
+
+	for (Enemy* enemy : enemies_) {
+		aabb2 = enemy->GetAABB();
+		if (IsCollision(aabb1, aabb2)) {
+			player_->OnCollision(enemy);
+			enemy->OnCollision(player_);
 		}
-	
-	#pragma endregion
+	}
+
+#pragma endregion
 }
 
-void GameScene::Draw() 
-{
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance(); 
+void GameScene::Draw() {
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	Model::PreDraw(dxCommon->GetCommandList());
 
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 
 	player_->Draw();
-	
+
 	skydome_->Draw();
 
+	if (deathParticles_) {
+		deathParticles_->Draw();
+	}
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
 	}
@@ -129,15 +136,13 @@ void GameScene::Draw()
 			if (!worldTransformBlock) {
 				continue;
 			}
-				modelBlock_->Draw(*worldTransformBlock, camera_);
-			
+			modelBlock_->Draw(*worldTransformBlock, camera_);
 		}
 	}
 	Model::PostDraw();
 }
 
-void GameScene::GenerateBlocks()
-{
+void GameScene::GenerateBlocks() {
 	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
 	uint32_t numBlockHorizontal = mapChipField_->GetkNumBlockHorizontal();
 	WorldTransformBlocks_.resize(numBlockVirtical);
@@ -151,16 +156,12 @@ void GameScene::GenerateBlocks()
 				worldTransform->Initialize();
 				WorldTransformBlocks_[i][j] = worldTransform;
 				WorldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
-			   
 			}
-
 		}
 	}
 }
 
-
-GameScene::~GameScene() 
-{ 
+GameScene::~GameScene() {
 	delete model_;
 	delete player_;
 	delete modelskydome_;
@@ -170,9 +171,8 @@ GameScene::~GameScene()
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : WorldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;
-			
 		}
-
 	}
 	delete debugCamera_;
+	delete modelDeathParticles_;
 }

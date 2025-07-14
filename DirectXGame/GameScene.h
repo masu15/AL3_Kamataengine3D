@@ -5,6 +5,7 @@
 #include"MapChipField.h"
 #include"CameraController.h"
 #include"Enemy.h"
+#include"DeathParticles.h"
 #include<vector>
 class GameScene
 {
@@ -37,6 +38,8 @@ bool isDebugCameraActive_ = false;
 KamataEngine::DebugCamera* debugCamera_ = nullptr;
 KamataEngine::Model* modelskydome_ = nullptr;
 KamataEngine::Model* modelEnemy_ = nullptr;
+KamataEngine::Model* modelDeathParticles_;
+DeathParticles* deathParticles_ = nullptr;
 };
 
 
