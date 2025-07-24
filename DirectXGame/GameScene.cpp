@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "MyMath.h"
+
 using namespace KamataEngine;
 
 void GameScene::Initialize() {
@@ -30,7 +31,7 @@ void GameScene::Initialize() {
 	modelDeathParticles_ = KamataEngine::Model::CreateFromOBJ("deathParticle");
 	Vector3 DeathPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 	deathParticles_->Initialize(modelDeathParticles_, &camera_, DeathPosition);
-
+	phase_ = Phase::kplay;
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy;
 		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i * 10, 18);
@@ -60,17 +61,32 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	player_->Update();
-	debugCamera_->Update();
-	skydome_->Update();
-	cameraController_->Update();
-	CheckAllCollisions();
-	for (Enemy* enemy : enemies_) {
-		enemy->Update();
+	switch (phase_) {
+	case Phase::kplay:
+		skydome_->Update();
+		player_->Update();
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
+		}
+		cameraController_->Update();
+		debugCamera_->Update();
+		CheckAllCollisions();
+		ChangePhase();
+		break;
+	case Phase::kDeath:
+		skydome_->Update();
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
+		}
+		if (deathParticles_) {
+			deathParticles_->Update();
+		}
+		debugCamera_->Update();
+		break;
+		ChangePhase();
 	}
-	if (deathParticles_) {
-		deathParticles_->Update();
-	}
+	
+	
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = !isDebugCameraActive_;
@@ -175,4 +191,20 @@ GameScene::~GameScene() {
 	}
 	delete debugCamera_;
 	delete modelDeathParticles_;
+}
+
+void GameScene::ChangePhase()
+{
+	switch (phase_) {
+	case Phase::kplay:
+		if (player_->IsDead()) {
+			phase_ = Phase::kDeath;
+			const Vector3 &deathParticlesPosition = player_->GetWorldPosition();
+			deathParticles_ = new DeathParticles;
+			deathParticles_->Initialize(modelDeathParticles_, &camera_,deathParticlesPosition );
+		}
+		break;
+	case Phase::kDeath:
+		break;
+	}
 }

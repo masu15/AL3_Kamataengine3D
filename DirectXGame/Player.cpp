@@ -129,15 +129,6 @@ void Player::CheckMapWall(const CollisionMapInfo& info) {
 		velocity_.x *= (1.0f - kAttenuationWall);
 	}
 }
-
-
-
-
-
-
-
-
-
 void Player::AnimateTurn() {
 	if (turnTimer_ > 0.0f) {
 		turnTimer_ -= 1.0f / 60.0f;
@@ -299,7 +290,7 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info)
 void Player::OnCollision(const Enemy* enemy)
 {
 	(void)enemy;
-	velocity_ += Vector3(0, KJumpAcceleration, 0);
+	isDead_ = true;
 }
 AABB Player::GetAABB() 
 {   

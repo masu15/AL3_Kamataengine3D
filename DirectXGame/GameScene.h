@@ -7,6 +7,10 @@
 #include"Enemy.h"
 #include"DeathParticles.h"
 #include<vector>
+enum class Phase {
+	kplay,
+	kDeath,
+};
 class GameScene
 {
 public:
@@ -22,12 +26,19 @@ public:
 
 	~GameScene();
 
+	void ChangePhase();
+
     Player* player_ = nullptr;
     skydome* skydome_ = nullptr;
 	std::list<Enemy*> enemies_;
 	MapChipField* mapChipField_;
 	CameraController* cameraController_;
+
 	std::vector<std::vector<KamataEngine::WorldTransform*>> WorldTransformBlocks_;
+
+	bool finished_ = false;
+	bool ISFinished() const { return finished_; }
+
 private:
 uint32_t textureHandle_ = 0;
 KamataEngine::Model* model_ = nullptr;
@@ -40,6 +51,7 @@ KamataEngine::Model* modelskydome_ = nullptr;
 KamataEngine::Model* modelEnemy_ = nullptr;
 KamataEngine::Model* modelDeathParticles_;
 DeathParticles* deathParticles_ = nullptr;
+Phase phase_;
 };
 
 

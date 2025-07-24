@@ -63,6 +63,8 @@ public:
 	AABB GetAABB();
 	KamataEngine::Vector3 GetWorldPosition();
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
+	bool isDead_ = false;
+	bool IsDead() const { return isDead_;}
 	private:
 	MapChipField* mapChipField_ = nullptr;
 	KamataEngine::WorldTransform worldTransform_;
