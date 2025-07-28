@@ -15,53 +15,7 @@ enum class Scene {
 
 };
 Scene scene = Scene::KUnknown;
-void ChansScene();
-void UpdateScene();
-void DrawScene();
-int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-
-    KamataEngine::Initialize(L"GC2D_06_マスヤマ_リョウタ_AL3");
-
-	
-
-	gameScene = new GameScene;
-	scene = Scene::kTitle;
-	titleScene = new TitleScene;
-	titleScene->Initialize();
-
-    ChansScene();
-	UpdateScene();
-
-	DrawScene();
-
-	gameScene->Initialize();
-
-	while (true) {
-		if (KamataEngine::Update())
-		{
-			break;
-		}
-		gameScene->Update();
-
-		dxCommon->PreDraw();
-
-		gameScene->Draw();
-		
-		dxCommon->PostDraw();
-	}
-	delete gameScene;
-
-	delete titleScene;
-
-	gameScene = nullptr;
-
-	KamataEngine::Finalize();
-	return 0;
-}
-
-void ChansScene() 
-{
+void ChansScene() {
 	switch (scene) {
 	case Scene::kTitle:
 		if (titleScene->ISFinished()) {
@@ -81,29 +35,22 @@ void ChansScene()
 			titleScene->Initialize();
 		}
 		break;
-	default:
-		break;
 	}
-	
-
 }
 
-void UpdateScene() 
-{
+void UpdateScene() {
 	switch (scene) {
-	
+
 	case Scene::kTitle:
 		titleScene->Update();
 		break;
 	case Scene::kGame:
 		gameScene->Update();
 		break;
-	
 	}
 }
 
-void DrawScene() 
-{
+void DrawScene() {
 	switch (scene) {
 
 	case Scene::kTitle:
@@ -114,3 +61,42 @@ void DrawScene()
 		break;
 	}
 }
+
+int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
+	KamataEngine::Initialize(L"GC2D_06_マスヤマ_リョウタ_AL3");
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+
+	scene = Scene::kTitle;
+	titleScene = new TitleScene;
+	titleScene->Initialize();
+
+   
+
+
+	
+
+	while (true) {
+		if (KamataEngine::Update())
+		{
+			break;
+		}
+		ChansScene();
+
+		UpdateScene();
+
+		dxCommon->PreDraw();
+
+	    DrawScene();
+		
+		dxCommon->PostDraw();
+	}
+	delete gameScene;
+
+	delete titleScene;
+
+	gameScene = nullptr;
+
+	KamataEngine::Finalize();
+	return 0;
+}
+

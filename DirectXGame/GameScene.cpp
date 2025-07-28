@@ -82,8 +82,9 @@ void GameScene::Update() {
 			deathParticles_->Update();
 		}
 		debugCamera_->Update();
-		break;
 		ChangePhase();
+		break;
+		
 	}
 	
 	
@@ -134,16 +135,20 @@ void GameScene::Draw() {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
 	Model::PreDraw(dxCommon->GetCommandList());
+	switch (phase_) {
+	case Phase::kplay:
+		
 
-	model_->Draw(worldTransform_, camera_, textureHandle_);
+		player_->Draw();
 
-	player_->Draw();
+	case Phase::kDeath:
 
-	skydome_->Draw();
-
-	if (deathParticles_) {
-		deathParticles_->Draw();
+		if (deathParticles_) {
+			deathParticles_->Draw();
+		}
 	}
+	model_->Draw(worldTransform_, camera_, textureHandle_);
+	skydome_->Draw();
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
 	}
@@ -199,12 +204,15 @@ void GameScene::ChangePhase()
 	case Phase::kplay:
 		if (player_->IsDead()) {
 			phase_ = Phase::kDeath;
-			const Vector3 &deathParticlesPosition = player_->GetWorldPosition();
+			Vector3 deathParticlesPosition = player_->GetWorldPosition();
 			deathParticles_ = new DeathParticles;
 			deathParticles_->Initialize(modelDeathParticles_, &camera_,deathParticlesPosition );
 		}
 		break;
 	case Phase::kDeath:
+		if (deathParticles_ && deathParticles_->ISFinished()){
+			finished_ = true;
+		}
 		break;
 	}
 }

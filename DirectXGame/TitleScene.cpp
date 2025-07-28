@@ -1,8 +1,15 @@
 #include "TitleScene.h"
-#include <KamataEngine.h>
+
+using namespace KamataEngine;
 void TitleScene::Initialize() 
 {
+	model_ = Model::CreateFromOBJ("titleFont");
+	modelPlayer_ = Model::CreateFromOBJ("player");
 
+	camera_.Initialize();
+
+	worldTransform_.Initialize();
+	worldTransformPlayer_.Initialize();
 }
 void TitleScene::Update()
 {
@@ -12,5 +19,11 @@ void TitleScene::Update()
 }
 void TitleScene::Draw() 
 {
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
+	Model::PreDraw(dxCommon->GetCommandList());
+	
+	model_->Draw(worldTransform_, camera_ );
+	modelPlayer_->Draw(worldTransformPlayer_, camera_);
+	Model::PostDraw();
 }

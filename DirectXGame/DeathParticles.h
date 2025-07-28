@@ -16,7 +16,8 @@ public:
 	static inline const float kSpeed = 0.1f;
 	static inline const float kAngleUnit = (2 * std::numbers::pi_v<float> / kNumParticles);
 	std::array<KamataEngine::WorldTransform, kNumParticles> worldTransforms_;
-	bool isFinished_ = false;
+	bool finished_ = false;
+	bool ISFinished() const { return finished_; }
 	float counter_ = 0.0f;
 	
 	KamataEngine::ObjectColor objectColor_;

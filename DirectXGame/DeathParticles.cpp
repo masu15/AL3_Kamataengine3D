@@ -15,7 +15,7 @@ void DeathParticles::Initialize(Model* model, Camera* camera, Vector3& position)
 	color_ = {1, 1, 1, 1};
 }
 void DeathParticles::Update() {
-	if (isFinished_) {
+	if (finished_) {
 		return;
 	}
 	for (uint32_t i = 0; i < kNumParticles; ++i) {
@@ -28,7 +28,7 @@ void DeathParticles::Update() {
 	counter_ += 1.0f / 60.0f;
 	if (counter_ >= kDuration) {
 		counter_ = kDuration;
-		isFinished_ = true;
+		finished_ = true;
 	}
 	for (WorldTransform& worldTransform : worldTransforms_) {
 		worldTransform.matWorld_ = MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
@@ -38,7 +38,7 @@ void DeathParticles::Update() {
 	objectColor_.SetColor(color_);
 }
 void DeathParticles::Draw() { 
-	if (isFinished_) {
+	if (finished_) {
 		return;
 	}
 	for (WorldTransform& worldTransform : worldTransforms_) {
