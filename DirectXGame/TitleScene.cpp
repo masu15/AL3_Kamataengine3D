@@ -10,11 +10,19 @@ void TitleScene::Initialize()
 
 	worldTransform_.Initialize();
 	worldTransformPlayer_.Initialize();
+	fade_ = new Fade;
+	fade_->Initialize();
+	fade_->Start(Fade::)
 }
-void TitleScene::Update()
-{
-	if (KamataEngine::Input::GetInstance()->PushKey(DIK_SPACE)) {
-		finished_ = true;
+void TitleScene::Update() {
+	switch (phase_)
+	{ 
+		case Phase::KMain:
+		
+	}
+	
+
+if (KamataEngine::Input::GetInstance()->PushKey(DIK_SPACE)) {
 	}
 }
 void TitleScene::Draw() 
@@ -26,4 +34,12 @@ void TitleScene::Draw()
 	model_->Draw(worldTransform_, camera_ );
 	modelPlayer_->Draw(worldTransformPlayer_, camera_);
 	Model::PostDraw();
+	fade_->Draw();
+}
+
+TitleScene::~TitleScene() 
+{ 
+	delete model_;
+	delete modelPlayer_;
+	delete fade_;
 }

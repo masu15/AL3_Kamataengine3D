@@ -140,12 +140,13 @@ void GameScene::Draw() {
 		
 
 		player_->Draw();
-
+		break;
 	case Phase::kDeath:
 
 		if (deathParticles_) {
 			deathParticles_->Draw();
 		}
+		break;
 	}
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	skydome_->Draw();

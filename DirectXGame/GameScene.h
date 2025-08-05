@@ -7,9 +7,13 @@
 #include"Enemy.h"
 #include"DeathParticles.h"
 #include<vector>
-enum class Phase {
+#include "Fade.h"
+enum class Phase 
+{
+	kFadeIn,
 	kplay,
 	kDeath,
+	kFadeOut
 };
 class GameScene
 {

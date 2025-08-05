@@ -1,6 +1,7 @@
 #include "DeathParticles.h"
 #include "MyMath.h"
 #include <algorithm>
+#include <cassert>
 using namespace KamataEngine;
 using namespace MathUtility;
 void DeathParticles::Initialize(Model* model, Camera* camera, Vector3& position) {

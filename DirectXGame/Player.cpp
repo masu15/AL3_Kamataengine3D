@@ -3,6 +3,7 @@
 #include"numbers"
 #include <algorithm>
 #include"MapChipField.h"
+#include <cassert>
 using namespace KamataEngine;
 using namespace MathUtility;
 void Player::Initialize(Model* model, Camera* camera,Vector3& position) { 
