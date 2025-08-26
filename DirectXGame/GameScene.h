@@ -37,7 +37,7 @@ public:
 	std::list<Enemy*> enemies_;
 	MapChipField* mapChipField_;
 	CameraController* cameraController_;
-
+	Fade* fade_ = nullptr;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> WorldTransformBlocks_;
 
 	bool finished_ = false;

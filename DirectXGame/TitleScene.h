@@ -2,14 +2,15 @@
 #include <KamataEngine.h>
 #include"Fade.h"
 
-enum class Phase {
-	KFadeIn,
-	KMain,
-	KFadeOut,
-};
+
 class TitleScene 
 {
 	public:
+	enum class Phase {
+		KFadeIn,
+		KMain,
+		KFadeOut,
+	};
 	void Initialize();
 
 	void Update();

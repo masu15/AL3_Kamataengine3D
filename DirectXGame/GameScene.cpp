@@ -31,7 +31,10 @@ void GameScene::Initialize() {
 	modelDeathParticles_ = KamataEngine::Model::CreateFromOBJ("deathParticle");
 	Vector3 DeathPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 	deathParticles_->Initialize(modelDeathParticles_, &camera_, DeathPosition);
-	phase_ = Phase::kplay;
+	phase_ = Phase::kFadeIn;
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
 	for (int32_t i = 0; i < 3; i++) {
 		Enemy* newEnemy = new Enemy;
 		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(i * 10, 18);
@@ -61,23 +64,17 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	ChangePhase();
 	switch (phase_) {
 	case Phase::kplay:
-		skydome_->Update();
-		player_->Update();
 		for (Enemy* enemy : enemies_) {
 			enemy->Update();
 		}
-		cameraController_->Update();
 		debugCamera_->Update();
 		CheckAllCollisions();
-		ChangePhase();
 		break;
 	case Phase::kDeath:
 		skydome_->Update();
-		for (Enemy* enemy : enemies_) {
-			enemy->Update();
-		}
 		if (deathParticles_) {
 			deathParticles_->Update();
 		}
@@ -86,8 +83,12 @@ void GameScene::Update() {
 		break;
 		
 	}
-	
-	
+	skydome_->Update();
+	player_->Update();
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
+	cameraController_->Update();
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = !isDebugCameraActive_;
@@ -139,7 +140,7 @@ void GameScene::Draw() {
 	case Phase::kplay:
 		
 
-		player_->Draw();
+		
 		break;
 	case Phase::kDeath:
 
@@ -148,8 +149,12 @@ void GameScene::Draw() {
 		}
 		break;
 	}
+	if (phase_ == Phase::kplay || phase_ == Phase::kFadeIn) {
+		player_->Draw();
+	}
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	skydome_->Draw();
+	fade_->Draw();
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
 	}
@@ -203,7 +208,7 @@ void GameScene::ChangePhase()
 {
 	switch (phase_) {
 	case Phase::kplay:
-		if (player_->IsDead()) {
+		if (player_->IsDead()==true) {
 			phase_ = Phase::kDeath;
 			Vector3 deathParticlesPosition = player_->GetWorldPosition();
 			deathParticles_ = new DeathParticles;
@@ -212,6 +217,20 @@ void GameScene::ChangePhase()
 		break;
 	case Phase::kDeath:
 		if (deathParticles_ && deathParticles_->ISFinished()){
+			phase_ = Phase::kFadeOut;
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
+		}
+		break;
+	case Phase::kFadeIn:
+		fade_->Update();
+		if (fade_->isFinished()) {
+			phase_ = Phase::kplay;
+			;
+		}
+		break;
+	case Phase::kFadeOut:
+		fade_->Update();
+		if (fade_->isFinished()) {
 			finished_ = true;
 		}
 		break;

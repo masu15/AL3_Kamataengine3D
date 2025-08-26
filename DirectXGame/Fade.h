@@ -1,14 +1,16 @@
 #pragma once
 #include"KamataEngine.h"
-enum class Status
-{
-	None,
-	FadeIn,
-	FadeOut,
-};
+
 class Fade
 {
 public:
+	enum class Status {
+		None,
+		FadeIn,
+		FadeOut,
+	};
+
+
 	void Initialize();
 
 	void Update();
@@ -21,11 +23,11 @@ public:
 
 	bool isFinished() const;
 	uint32_t textureHandle_ = 0;
-	KamataEngine::Sprite* sprite_=nullptr;
+	KamataEngine::Sprite* sprite_ = nullptr;
 	Status status_ = Status::None;
 	float duration_ = 0.0f;
 	float counter_ = 0.0f;
 
-private:
+
 	
 };
