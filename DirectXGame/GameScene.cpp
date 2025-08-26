@@ -154,7 +154,7 @@ void GameScene::Draw() {
 	}
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	skydome_->Draw();
-	fade_->Draw();
+	
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
 	}
@@ -166,6 +166,7 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlock, camera_);
 		}
 	}
+	fade_->Draw();
 	Model::PostDraw();
 }
 
