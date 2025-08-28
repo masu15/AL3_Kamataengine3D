@@ -41,14 +41,16 @@ void TitleScene::Update() {
 			    finished_ = true;
 			    break;
 			}
-		    worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.rotation_);
-		    rotate += 0.1f;
-		    worldTransformPlayer_.rotation_.y = 3.14f + sin(rotate);
+		  
 	}
 	
+	  worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.rotation_);
+	worldTransform_.TransferMatrix();
+	rotate += 0.1f;
+	worldTransformPlayer_.rotation_.y = 3.14f + sin(rotate);
+	worldTransformPlayer_.matWorld_ = MakeAffineMatrix(worldTransformPlayer_.scale_, worldTransformPlayer_.rotation_, worldTransformPlayer_.translation_);
+	worldTransformPlayer_.TransferMatrix();
 
-if (KamataEngine::Input::GetInstance()->PushKey(DIK_SPACE)) {
-	}
 }
 void TitleScene::Draw() 
 {
